@@ -3,14 +3,10 @@ import {HttpService} from '@nestjs/axios'
 import {Processor, Process, OnQueueActive, OnQueueError, OnQueueCompleted} from '@nestjs/bull'
 import {Message} from '../../entities/message.entity'
 import {Subscription} from '../../entities/subscription.entity'
-import {SubscriptionService} from '../../services/subscriptions.service'
 
 @Processor('message')
 export class MessageForwaderConsumer {
-    constructor(
-        private httpService: HttpService,
-        private subscriptionService: SubscriptionService
-    ) {}
+    constructor(private httpService: HttpService) {}
 
     @Process('forward')
     async forwardMessage(job: Job<{message: Message,  subscriber: Subscription}>) { 
